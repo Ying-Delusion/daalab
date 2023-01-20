@@ -1,0 +1,475 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+1TOH
+#include<stdio.h>
+#include<time.h>
+void TOH(int n,char x,char y,char z) {
+   if(n>0) {
+      TOH(n-1,x,z,y);
+      printf("%c to %c\n",x,y);
+      TOH(n-1,z,y,x);
+   }
+}
+int main() {
+   int n,clock_t,start_t,end_t;
+   double CPU_time_used;
+   printf("Enter the number of disks\n");
+   scanf("%d",&n);
+   start_t=clock();
+   TOH(n,'X','Y','Z');
+   end_t=clock();
+   CPU_time_used=(double)(end_t-start_t)/CLOCKS_PER_SEC;
+   printf("\n Execution time %f",CPU_time_used);
+}
+
+------------------------------------------------------------------------------------
+2BS
+#include<stdio.h>
+#include<time.h>
+int main()
+{
+int low,high,mid,size,key;
+printf("Enter the number of elements \n");
+scanf("%d",&size);
+low=0,high=size-1;
+int a[size];
+printf("enter array elements\n");
+for(int i=0;i<size;i++)
+{
+scanf("%d",&a[i]);
+}
+printf("enter the elements to be search\n");
+scanf("%d",&key);
+clock_t start=clock();
+while(low<high)
+{
+mid=(low+high)/2;
+if(a[mid]==key)
+{
+printf("Key found at index %d\n",mid);break; }
+else if(key<a[mid])
+{
+high=mid-1;
+}
+else if(key>a[mid])
+{
+low=mid+1;
+}
+}
+if(low>high)
+{
+printf("element not found\n");
+}
+clock_t end=clock();
+printf("Start time is %lf\n",(double)start);
+printf("End time is %lf\n" ,(double)end);
+printf("Total time is %lf\n",(double)(end-start));
+return 0;
+}
+
+----------------------------------------------------------------------------------
+3Merge sort
+#include<stdio.h>
+#include<time.h>
+void mergesort(int a[],int low,int high);
+void merge(int a[],int i1,int j1,int i2,int j2);
+int n=0;
+int main()
+{
+    int a[30],i;
+    printf("Enter no of elements:");
+    scanf("%d",&n);
+    printf("Enter array elements:");
+    for(i=0;i<n;i++)
+    scanf("%d",&a[i]);
+    clock_t start=clock();
+    mergesort(a,0,n-1);
+    clock_t end=clock();
+    printf("Start time is %lf\n",(double)start);
+    printf("End time is %lf\n",(double)end);
+    printf("Total time is %lf\n",(double)(end-start));
+    printf("\nsorted array is :");
+    for(i=0;i<n;i++)
+    printf("%d ",a[i]);
+    return 0;
+ }
+void mergesort(int a[],int low,int high)
+{
+    int mid;
+    if(low<high)
+    {
+        mid=(low+high)/2;
+        mergesort(a,low,mid);
+        mergesort(a,mid+1,high);
+        merge(a,low,mid,mid+1,high);
+    }
+}
+void merge(int a[],int i1,int j1,int i2,int j2)
+{
+    int temp[50]; 
+    int i,j,k;
+    i=i1;
+    j=i2; k=0;
+    while(i<=j1 && j<=j2)
+    {
+        if(a[i]<a[j])
+        temp[k++]=a[i++];
+        else
+        temp[k++]=a[j++];
+    }
+    while(i<=j1)
+    temp[k++]=a[i++];
+    while(j<=j2)
+    temp[k++]=a[j++];
+    for(i=i1,j=0;i<=j2;i++,j++)
+    a[i]=temp[j];
+    printf("\n");
+}
+--------------------------------------------------------------------------------------------
+4QuickSort
+#include<stdio.h>
+#include<time.h>
+void quicksort(int a[],int low,int high);
+int partition(int a[],int low,int high);
+void swap(int*,int*);
+void quicksort(int a[],int low,int high)
+{
+    if(low<high)
+    {
+        int pi = partition(a,low,high);
+        quicksort(a,low,pi-1);
+        quicksort(a,pi+1,high);
+    }
+}
+void swap(int *a,int *b)
+{
+    int c=*a;
+    *a=*b;
+    *b=c;
+}
+int partition(int a[],int low,int high)
+{
+    int pivot=a[high];
+    int i=low-1;
+    for(int j=low;j<=high-1;j++)
+    {
+        if(a[j]<=pivot)
+        {
+        i++;
+        swap(&a[i],&a[j]);
+        }
+    }
+    swap(&a[i+1],&a[high]); 
+    return (i+1);
+}
+int main()
+{
+    int a[5]={34,65,23,76,33};
+    clock_t start=clock();
+    quicksort(a,0,4);
+    clock_t end=clock();
+    printf("Start time is %lf\n",(double)start);
+    printf("End time is %lf\n",(double)end);
+    printf("Total time is %lf\n",(double)(end-start));
+    printf("Sorted array:");
+    for(int k=0;k<=4;k++)
+    {
+        printf("%d ",a[k]);
+    }
+    return 0;
+}
+----------------------------------------------------------------------------
+5)kruskal
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#define MAX 30
+
+int n, G[MAX][MAX], v[MAX], cost = 0, p[MAX];
+
+
+int find(int i) {
+    while (p[i]) {
+        i = p[i];
+    }
+    return i;
+}
+
+int join(int i, int j) {
+    if (i != j) {
+        p[j] = i;
+        return 1;
+    }
+    return 0;
+}
+
+void kruskal() {
+    int edges = 0, from, to;
+    while (edges < n - 1) {
+        int min = 9999;
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < n; j++) {
+                if (min > G[i][j]) {
+                    min = G[i][j];
+                    from = i;
+                    to = j;
+                }
+            }
+        }
+        int x = find(from);
+        int y = find(to);
+        if (join(x, y)) {
+            printf("%d --> %d\n", from + 1, to + 1);
+            edges++;
+            cost += G[from][to];
+        }
+        G[from][to] = 9999;
+        G[to][from] = 9999;
+    }
+    printf("Cost: %d\n", cost);
+    cost = 0;
+}
+
+int main() {
+    printf("Enter the number of nodes: ");
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        printf("Enter the adjacency for node %d: ", i+1);
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &G[i][j]);
+            if (G[i][j] == 0) {
+                G[i][j] = 9999;
+            }
+        }
+        v[i] = 0;
+    }
+
+    printf("\nKruskal\n");
+    kruskal();
+    
+    return 0;
+}
+-------------------------------------------------------------------------------------------
+6)Prims
+#include <stdio.h>
+#include <stdlib.h>
+#include <time.h>
+#define MAX 30
+
+int n, G[MAX][MAX], v[MAX], cost = 0, p[MAX];
+void prims() {
+    int edges = 0, from, to;
+    v[0] = 1;
+    while (edges < n - 1) {
+        int min = 9999;
+        for (int i = 0; i < n; i++) {
+            if (v[i]) {
+                for (int j = 0; j < n; j++) {
+                    if (!v[j]) {
+                        if (min > G[i][j]) {
+                            min = G[i][j];
+                            from = i;
+                            to = j;
+                        }
+                    }
+                }
+            }
+        }
+        cost += G[from][to];
+        printf("%d --> %d\n", from + 1, to + 1);
+        v[to] = 1;
+        edges++;
+    }
+    printf("Cost: %d\n", cost);
+    cost = 0;
+}
+int main() {
+    printf("Enter the number of nodes: ");
+    scanf("%d", &n);
+    for (int i = 0; i < n; i++) {
+        printf("Enter the adjacency for node %d: ", i+1);
+        for (int j = 0; j < n; j++) {
+            scanf("%d", &G[i][j]);
+            if (G[i][j] == 0) {
+                G[i][j] = 9999;
+            }
+        }
+        v[i] = 0;
+    }
+    
+    printf("\nPrims\n");
+    prims();
+    return 0;
+}
+-------------------------------------------------------------------------
+7FloydWarshall
+#include <stdio.h>
+#include<time.h>
+#define MAX 30
+
+int n, G[MAX][MAX];
+
+void floydWarshall()
+{
+    for (int k = 0; k < n; k++)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++) 
+            {
+                if (G[i][k] + G[k][j] < G[i][j])
+                    G[i][j] = G[i][k] + G[k][j];
+            }
+        }
+    }
+    printf("The all pair shortest path is: \n");
+    for (int i = 0; i < n; i++) 
+    {
+        for (int j = 0; j < n; j++)
+        {
+            printf("%d ", G[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main()
+{
+    printf("Enter the number of nodes: ");
+    scanf("%d", &n);
+    clock_t start=clock();
+    for (int i = 0; i < n; i++) 
+    {
+        printf("Enter the adjacency for node %d: ", i+1);
+        for (int j = 0; j < n; j++) 
+        {
+            scanf("%d", &G[i][j]);
+            if (G[i][j] == 0) 
+            {
+                G[i][j] = 9999;
+            }
+        }
+    }
+    floydWarshall();
+    clock_t end=clock();
+    printf("Start time is %lf\n",(double)start);
+    printf("End time is %lf\n",(double)end);
+    printf("Total time is %lf\n",(double)(end-start));
+    return 0;
+}
+-----------------------------------------------------------------------------------
+8)0/1 knap
+#include <stdio.h>
+#include <time.h>
+#define MAX 100
+
+int n, p[MAX], w[MAX], m, table[MAX][MAX];
+
+int max(int a, int b) {
+    return a > b ? a : b;
+}
+
+void knapsack() {
+    for (int i = 0; i < n+1; i++) {
+        for (int j = 0; j <= m; j++) {
+            if (i == 0 || j == 0) {
+                table[i][j] = 0;
+            } else if (w[i] <= j) {
+                table[i][j] = max(p[i]+table[i-1][j-w[i]] , table[i-1][j]);
+            } else {
+                table[i][j] = table[i-1][j];
+            }
+        }
+    }
+    printf("The max profit is: %d\n", table[n][m]);
+}
+
+int main() {
+    printf("Enter number of items: ");
+    scanf("%d", &n);
+    printf("Enter the profits list: ");
+    for (int i = 1; i < n+1; i++) 
+        scanf("%d", &p[i]);
+    p[0] = 0;
+    printf("Enter weight list: ");
+    for (int i = 1; i < n+1; i++) 
+        scanf("%d", &w[i]);
+    w[0] = 0;
+    printf("Enter the max weight: ");
+    scanf("%d", &m);
+    
+    knapsack();
+    
+    return 0;
+}
+
+-------------------------------------------------------------------------------------
+
